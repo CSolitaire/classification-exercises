@@ -9,3 +9,5 @@ Thumbs.db
 *.csv
 *.json
 *.xlsx
+titanic.csv
+iris.csv
