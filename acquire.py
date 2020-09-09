@@ -1,5 +1,6 @@
 def get_titanic_data():
     import os
+    import pandas as pd
     filename = "titanic.csv"
     if os.path.isfile(filename):
         return pd.read_csv(filename)
@@ -11,6 +12,7 @@ def get_titanic_data():
 
 def get_iris_data():
     import os
+    import pandas as pd
     filename = "iris.csv"
     if os.path.isfile(filename):
         return pd.read_csv(filename)
