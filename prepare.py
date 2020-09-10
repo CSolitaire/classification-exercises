@@ -17,20 +17,8 @@ def prep_iris(df):
 # prep_titanic
 
 def train_valid_test(df):
-    train_validate, test = train_test_split(df, test_size = .2,
-          random_state = 123,
-          stratify = df.survived)
-    train, validate = train_test_split(train_validate, test_size = .3
-          random_state = 123,
-          stratify = df.survived)
-    return train, validate, test
-
-def prep_titanic(df):
-    df.drop(columns = ['embarked', 'class', 'passenger_id', 'cabin'], inplace = True)
-    df_dummies = pd.get_dummies(df[['sex', 'embark_town']], drop_first = True)
-    df_new = pd.concat([df, df_dummies], axis = 1)
-    train, validate, test = train_valid_test(df_new)
-    impute_age(train, validate, test)
+    train_validate, test = train_test_split(df, test_size = .2, random_state = 123, stratify = df.survived)
+    train, validate = train_test_split(train_validate, test_size = .3, random_state = 123, stratify = train_validate.survived)
     return train, validate, test
 
 def impute_age(train, validate, test):
@@ -39,3 +27,16 @@ def impute_age(train, validate, test):
     validate.age = validate.age.fillna(avg_age)
     test.age = test.age.fillna(avg_age)
     return train, validate, test
+
+def prep_titanic(df):
+    df.drop(columns = ['embarked', 'class', 'passenger_id', 'deck'], inplace = True)
+    # drop missing observations of embark town
+    df = df[~df.embark_town.isnull()]
+    df_dummies = pd.get_dummies(df[['sex', 'embark_town']], drop_first = True)
+    df_new = pd.concat([df, df_dummies], axis = 1)
+    #split data
+    train, validate, test = train_valid_test(df_new)
+    #impute age data
+    impute_age(train, validate, test)
+    return train, validate, test
+
