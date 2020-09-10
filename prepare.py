@@ -86,3 +86,28 @@ def prep_titanic(df):
     ohe, train, test = ohe_columns(train, test)
     
     return scaler, ohe, train, test
+
+#prep_titanic_2
+# def prep_titanic_2(df):
+#     #removes null values from embark town
+#     df= df[~df.embark_town.isnull()]
+#     #drops garbage columns
+#     cols_to_drop = ['embarked', 'class', 'deck', 'passenger_id']
+#     df = df.drop(columns=cols_to_drop)
+#     #splits data
+#     train, test = train_test_split(df, train_size=.75, stratify=df.survived, random_state=123)
+#     #encodes embarked town
+#     le = LabelEncoder()
+#     train['embark_town'] = le.fit_transform(train.embark_town)
+#     test['embark_town'] = le.transform(test.embark_town)
+#     #scales age/fare
+#     scaler = MinMaxScaler()
+#     train[['age','fare']] = scaler.fit_transform(train[['age','fare']])
+#     test[['age','fare']] = scaler.transform(test[['age','fare']])
+#     #imputes missing values
+#     avg_age = train.age.mean()
+#     train.age = train.age.fillna(avg_age)
+#     test.age = test.age.fillna(avg_age)
+#     return train, test
+
+    
