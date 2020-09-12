@@ -42,6 +42,11 @@ def prep_titanic(df):
 
 ###################### Prepare Telco Churn Data ######################
 
+def telco_train_valid_test(df):
+    train_validate, test = train_test_split(df, test_size = .2, random_state = 123, stratify = df.churn)
+    train, validate = train_test_split(train_validate, test_size = .3, random_state = 123, stratify = train_validate.churn)
+    return train, validate, test
+
 def prep_telco_data(df):
     # Delete columns 'customer_id', contract_type_id, internet_service_type_id, payment_type_id    
     df.drop(columns = ['customer_id','contract_type_id','internet_service_type_id', 'payment_type_id'], inplace = True)
@@ -109,7 +114,5 @@ def prep_telco_data(df):
     # Change total_charges to float from object
     df['total_charges'] = pd.to_numeric(df['total_charges'],errors='coerce')
     #split data
-    train, validate, test = train_valid_test(df)
-    #impute age data
-    impute_age(train, validate, test)
+    train, validate, test = telco_train_valid_test(df)
     return train, validate, test
