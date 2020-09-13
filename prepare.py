@@ -97,10 +97,10 @@ def prep_telco_data(df):
     #df = pd.concat([df, multiple], axis=1)
     #df.rename(columns = {'No': 'no_streaming_movies', 'Yes': 'yes_streaming_movies'}, inplace = True)
     #df.drop(columns = ['streaming_movies'], inplace = True)
-    ## Add dummy variables as new columns in dataframe and rename them, delete origional
-    #multiple = df.contract_type.str.get_dummies()
-    #df = pd.concat([df, multiple], axis=1)
-    #df.rename(columns = {'Month-to-month': 'month_to_month_contract', 'One year': 'one_year_contract', 'Two year': 'two_year_contract'}, inplace = True)
+    # Add dummy variables as new columns in dataframe and rename them, delete origional
+    multiple = df.contract_type.str.get_dummies()
+    df = pd.concat([df, multiple], axis=1)
+    df.rename(columns = {'Month-to-month': 'month_to_month_contract', 'One year': 'one_year_contract', 'Two year': 'two_year_contract'}, inplace = True)
     #df.drop(columns = ['contract_type'], inplace = True)
     ## Add dummy variables as new columns in dataframe and rename them, delete origional
     #multiple = df.internet_service_type.str.get_dummies()
