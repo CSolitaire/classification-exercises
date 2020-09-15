@@ -33,7 +33,7 @@ def prep_titanic_data(df):
     # drop missing observations of embark town
     df = df[~df.embark_town.isnull()]
     # drop missing observations of age
-    df = df[~df.age.isnull()]
+    # df = df[~df.age.isnull()]
     # convert sex object in to category
     df["sex"] = df["sex"].astype("category")
     # add sex category
