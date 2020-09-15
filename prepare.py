@@ -28,17 +28,17 @@ def impute_age(train, validate, test):
     test.age = test.age.fillna(avg_age)
     return train, validate, test
 
-def prep_titanic(df):
+def prep_titanic_data(df):
     df.drop(columns = ['embarked', 'class', 'passenger_id', 'deck'], inplace = True)
     # drop missing observations of embark town
     df = df[~df.embark_town.isnull()]
     df_dummies = pd.get_dummies(df[['sex', 'embark_town']], drop_first = True)
     df_new = pd.concat([df, df_dummies], axis = 1)
     #split data
-    train, validate, test = train_valid_test(df_new)
+    #train, validate, test = train_valid_test(df_new)
     #impute age data
-    impute_age(train, validate, test)
-    return train, validate, test
+    #impute_age(train, validate, test)
+    #return train, validate, test
 
 ###################### Prepare Telco Churn Data ######################
 
