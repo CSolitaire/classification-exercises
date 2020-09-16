@@ -31,7 +31,7 @@ def impute_age(train, validate, test):
 def prep_titanic_data(df):
     df.drop(columns = ['class', 'passenger_id', 'deck'], inplace = True)
     # drop missing observations of embark town
-    df = df[~df.embark_town.isnull()]
+    #df = df[~df.embark_town.isnull()]
     # drop missing observations of age
     # df = df[~df.age.isnull()]
     # convert sex object in to category
