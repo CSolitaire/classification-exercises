@@ -51,10 +51,16 @@ def prep_titanic_data(df):
     return df
     #return train, validate, test
 
+def scale_beta(X_train, X_validate, X_test):
+    scaler = MinMaxScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_validate = scaler.fit_transform(X_validate)
+    X_test = scaler.fit_transform(X_test)
+    return X_train, X_validate, X_test
+
 def impute_beta(X_train, X_validate, X_test, y_train, y_validate, y_test):
     imp = SimpleImputer( strategy='median')
-    imp.fit(X_train)
-    X_train = imp.transform(X_train)
+    X_train = imp.fit_transform(X_train)
     X_validate = imp.transform(X_validate)
     X_test = imp.transform(X_test)
     imp.fit(y_train)
@@ -82,8 +88,10 @@ def prep_titanic_data_beta(df):
     df["embark_town"] = df["embark_town"].cat.codes
     #split data
     X_train, X_validate, X_test, y_train, y_validate, y_test = train_valid_test_beta(df)
-    #Impute Data
+    #Impute data
     X_train, X_validate, X_test, y_train, y_validate, y_test = impute_beta(X_train, X_validate, X_test, y_train, y_validate, y_test)
+    #scale data
+    X_train, X_validate, X_test = scale_beta(X_train, X_validate, X_test)
     return X_train, X_validate, X_test, y_train, y_validate, y_test
 
 ###################### Prepare Telco Churn Data ######################
