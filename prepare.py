@@ -51,6 +51,41 @@ def prep_titanic_data(df):
     return df
     #return train, validate, test
 
+def impute_beta(X_train, X_validate, X_test, y_train, y_validate, y_test):
+    imp = SimpleImputer( strategy='median')
+    imp.fit(X_train)
+    X_train = imp.transform(X_train)
+    X_validate = imp.transform(X_validate)
+    X_test = imp.transform(X_test)
+    imp.fit(y_train)
+    #y_train = imp.transform(y_train)
+    #y_validate = imp.transform(y_validate)
+    #y_test = imp.transform(y_test)
+    return X_train, X_validate, X_test, y_train, y_validate, y_test
+
+def train_valid_test_beta(df):
+    X = df[['pclass','alone','embark_town','sex_cat','age']]
+    y = df[['survived']]
+    X_train_validate, X_test, y_train_validate, y_test = train_test_split(X, y, test_size = .20, random_state = 123)
+    X_train, X_validate, y_train, y_validate = train_test_split(X_train_validate, y_train_validate, test_size = .30, random_state = 123)
+    return X_train, X_validate, X_test, y_train, y_validate, y_test
+
+def prep_titanic_data_beta(df):
+    df.drop(columns = ['class', 'passenger_id', 'deck'], inplace = True)
+    # convert sex object in to category
+    df["sex"] = df["sex"].astype("category")
+    # add sex category
+    df["sex_cat"] = df["sex"].cat.codes
+    # convert embark_town object in to category
+    df["embark_town"] = df["embark_town"].astype('category')
+    # add embark_town category
+    df["embark_town"] = df["embark_town"].cat.codes
+    #split data
+    X_train, X_validate, X_test, y_train, y_validate, y_test = train_valid_test_beta(df)
+    #Impute Data
+    X_train, X_validate, X_test, y_train, y_validate, y_test = impute_beta(X_train, X_validate, X_test, y_train, y_validate, y_test)
+    return X_train, X_validate, X_test, y_train, y_validate, y_test
+
 ###################### Prepare Telco Churn Data ######################
 
 def telco_train_valid_test(df):
