@@ -86,13 +86,18 @@ def prep_titanic_data_beta(df):
     df["embark_town"] = df["embark_town"].astype('category')
     # add embark_town category
     df["embark_town"] = df["embark_town"].cat.codes
+    df.drop(columns = ['sex', 'embarked'], inplace = True)
     #split data
-    X_train, X_validate, X_test, y_train, y_validate, y_test = train_valid_test_beta(df)
+    train, validate, test = train_valid_test(df)
+    #impute age data
+    train, validate, test = impute_age(train, validate, test)
+    #X_train, X_validate, X_test, y_train, y_validate, y_test = train_valid_test_beta(df)
     #Impute data
-    X_train, X_validate, X_test, y_train, y_validate, y_test = impute_beta(X_train, X_validate, X_test, y_train, y_validate, y_test)
+    #X_train, X_validate, X_test, y_train, y_validate, y_test = impute_beta(X_train, X_validate, X_test, y_train, y_validate, y_test)
     #scale data
-    X_train, X_validate, X_test = scale_beta(X_train, X_validate, X_test)
-    return X_train, X_validate, X_test, y_train, y_validate, y_test
+    #X_train, X_validate, X_test = scale_beta(X_train, X_validate, X_test)
+    #return X_train, X_validate, X_test, y_train, y_validate, y_test
+    return train, validate, test
 
 def prep_titanic_data_alpha(df):
     df.drop(columns = ['class', 'passenger_id', 'deck'], inplace = True)
