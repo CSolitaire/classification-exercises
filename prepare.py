@@ -100,6 +100,8 @@ def prep_titanic_data_alpha(df):
     df = df[~df.embark_town.isnull()]
     # drop missing observations of age
     df = df[~df.age.isnull()]
+    df_dummies = pd.get_dummies(df[['sex', 'embark_town']])
+    df = pd.concat([df, df_dummies], axis = 1)
     # convert sex object in to category
     df["sex"] = df["sex"].astype("category")
     # add sex category
@@ -108,8 +110,9 @@ def prep_titanic_data_alpha(df):
     df["embark_town"] = df["embark_town"].astype('category')
     # add embark_town category
     df["embark_town"] = df["embark_town"].cat.codes
-    #df_dummies = pd.get_dummies(df[['sex', 'embark_town']], drop_first = True)
-    #df_new = pd.concat([df, df_dummies], axis = 1)
+    df.drop(columns = ['sex', 'embarked'], inplace = True)
+    #df = df['sex_female','sex_male','embark_town_Cherbourg','embark_town_Queenstown','embark_town_Southampton','sex_cat'].astype(uint8)
+    #'sex_male','embark_town_Cherbourg','embark_town_Queenstown','embark_town_Southampton','sex_cat']
     #split data
     train, validate, test = train_valid_test(df)
     #impute age data
