@@ -5,6 +5,7 @@ import scipy as sp
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
 # prep_iris 
 def prep_iris(df):
@@ -15,6 +16,13 @@ def prep_iris(df):
     return df
 
 # prep_titanic
+
+def scale(train, validate, test):
+    scaler = MinMaxScaler()
+    train[['age','fare']] = scaler.fit_transform(train[['age','fare']])
+    validate[['age','fare']] = scaler.fit_transform(validate[['age','fare']])
+    test[['age','fare']] = scaler.transform(test[['age','fare']])
+    return train, validate, test
 
 def train_valid_test(df):
     train_validate, test = train_test_split(df, test_size = .2, random_state = 123, stratify = df.survived)
@@ -95,8 +103,7 @@ def prep_titanic_data_beta(df):
     #Impute data
     #X_train, X_validate, X_test, y_train, y_validate, y_test = impute_beta(X_train, X_validate, X_test, y_train, y_validate, y_test)
     #scale data
-    #X_train, X_validate, X_test = scale_beta(X_train, X_validate, X_test)
-    #return X_train, X_validate, X_test, y_train, y_validate, y_test
+    #train, validate, test = scale(train, validate, test)
     return train, validate, test
 
 def prep_titanic_data_alpha(df):
@@ -125,6 +132,24 @@ def prep_titanic_data_alpha(df):
     #return df
     return train, validate, test
 
+def prep_titanic_data_3(df):
+    df.drop(columns = ['class', 'passenger_id', 'deck'], inplace = True)
+    # convert sex object in to category
+    df["sex"] = df["sex"].astype("category")
+    # add sex category
+    df["sex_cat"] = df["sex"].cat.codes
+    # convert embark_town object in to category
+    df["embark_town"] = df["embark_town"].astype('category')
+    # add embark_town category
+    df["embark_town"] = df["embark_town"].cat.codes
+    df.drop(columns = ['sex', 'embarked'], inplace = True)
+    #split data
+    train, validate, test = train_valid_test(df)
+    #impute age data
+    train, validate, test = impute_age(train, validate, test)
+    #scale data
+    train, validate, test = scale(train, validate, test)
+    return train, validate, test
 ###################### Prepare Telco Churn Data ######################
 
 def telco_train_valid_test(df):
